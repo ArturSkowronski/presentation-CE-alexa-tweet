@@ -15,7 +15,16 @@ var handlers = {
 		.then((tweets) => {
 			this.emit(":tell", clearTag(`${tweets.statuses[0].text} <break time="1s"/> by ${tweets.statuses[0].user.name}`));
 		});
-	}
+	},
+	'HashIntent': function() {
+		var hash = this.event.request.intent.slots.Hash.value;
+		console.log("hash" + hash)
+		twitter
+		.getByHash(hash)
+		.then((tweets) => {
+			this.emit(":tell", clearTag(`${tweets.statuses[0].text} <break time="1s"/> by ${tweets.statuses[0].user.name}`));
+		});
+	},
 };
 
 exports.handler = function(event, context, callback) {
