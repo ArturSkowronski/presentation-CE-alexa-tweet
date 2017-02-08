@@ -7,4 +7,6 @@ var client = new Twitter({
 	access_token_secret: '0ZLqcbe2CYNZYylkNcF4xN0EFmQzz8zDh4R4lkPmEIBQG'
 });
 
-exports.client = client
+exports.getByHash = function(queryStrings){
+	return client.get('search/tweets', {q: queryStrings})
+}
