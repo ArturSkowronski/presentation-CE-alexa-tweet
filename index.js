@@ -1,9 +1,14 @@
 var twitter = require("./src/twitter-client");
+var Alexa = require('alexa-sdk');
 
-exports.handler = function(event, context, callback){
-	twitter
-	.getByHash('meetjs')
-	.then(function(tweets){
-		console.log(`${tweets.statuses[0].text} by ${tweets.statuses[0].user.name}`)
-	});
+var handlers = {
+	'LaunchRequest': function () {
+		this.emit(":tell", `Hello Meet JS`);
+	}
+};
+
+exports.handler = function(event, context, callback) {
+	var alexa = Alexa.handler(event, context);
+	alexa.registerHandlers(handlers);
+	alexa.execute();
 };
