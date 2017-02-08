@@ -10,21 +10,33 @@ var clearTag = function(value){
 
 var handlers = {
 	'LaunchRequest': function () {
-		twitter
-		.getByHash('meetjs')
-		.then((tweets) => {
-			this.emit(":tell", clearTag(`${tweets.statuses[0].text} <break time="1s"/> by ${tweets.statuses[0].user.name}`));
-		});
+		this.emit(':ask', 'Hello my dear MeetJS! For which query do you want to check?', 'Which query to check?');
 	},
 	'HashIntent': function() {
 		var hash = this.event.request.intent.slots.Hash.value;
-		console.log("hash" + hash)
+		this.attributes['item'] = 0;
+		this.attributes['hash'] = hash;
+		console.log("item" + this.attributes['item'])
 		twitter
 		.getByHash(hash)
 		.then((tweets) => {
-			this.emit(":tell", clearTag(`${tweets.statuses[0].text} <break time="1s"/> by ${tweets.statuses[0].user.name}`));
+			this.emit(":ask", clearTag(`${tweets.statuses[0].text} <break time="1s"/> by ${tweets.statuses[0].user.name}. Do you want next?`));
 		});
 	},
+	'NextIntent': function() {
+		var index = this.attributes['item'];
+		var hash = this.attributes['hash'];
+		this.attributes['item'] = index+1;
+		console.log("item" + this.attributes['item'])
+		twitter
+		.getByHash(hash)
+		.then((tweets) => {
+			this.emit(":ask", clearTag(`${tweets.statuses[index].text} <break time="1s"/> by ${tweets.statuses[index].user.name}. Do you want next?`));
+		});
+	},
+	'AMAZON.CancelIntent': function() {
+		this.emit(":tell", "Ok, Bye Bye.")
+	}
 };
 
 exports.handler = function(event, context, callback) {
