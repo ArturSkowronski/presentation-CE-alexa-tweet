@@ -3,7 +3,11 @@ var Alexa = require('alexa-sdk');
 
 var handlers = {
 	'LaunchRequest': function () {
-		this.emit(":tell", `Hello Meet JS`);
+		twitter
+		.getByHash('meetjs')
+		.then((tweets) => {
+			this.emit(":tell", `${tweets.statuses[0].text} by ${tweets.statuses[0].user.name}`);
+		});
 	}
 };
 

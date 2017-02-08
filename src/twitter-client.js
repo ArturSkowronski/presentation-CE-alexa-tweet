@@ -8,5 +8,5 @@ var client = new Twitter({
 });
 
 exports.getByHash = function(queryStrings){
-	return client.get('search/tweets', {q: queryStrings})
+	return client.get('search/tweets', {q: queryStrings, lang: "en"})
 }
